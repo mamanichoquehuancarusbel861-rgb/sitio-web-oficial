@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ferretería API Studio | Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="brand">
+      <div class="brand-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5 4 4"/><path d="M13 7 8.7 2.7a2.41 2.41 0 0 0-3.4 0L2.7 5.3a2.41 2.41 0 0 0 0 3.4L7 13"/><path d="m8 6 2-2"/><path d="m2 14 6 6"/><path d="m14 20 6.3-6.3a2.4 2.4 0 0 0 0-3.4L18 8"/></svg>
+      </div>
+      <div>
+        <h1>Ferretería <span class="badge-pro">STUDIO</span></h1>
+        <p class="subtitle">Control y Gestión REST API</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <div class="status-chip">
+        <span class="ping-dot"></span>
+        API REST Conectada (Flask:5000)
+      </div>
+      <div class="user-profile">
+        <img src="img/Admin.jpg" alt="Usuario Admin" class="avatar-sm">
+        <span>Admin</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-container">
+
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <span class="sidebar-label">COLECCIONES</span>
+        <nav class="nav-list">
+          <button class="nav-item active" onclick="switchCollection('productos', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+            Productos
+          </button>
+
+          <button class="nav-item" onclick="switchCollection('clientes', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Clientes
+          </button>
+
+          <button class="nav-item" onclick="switchCollection('categorias', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l5.58-5.58c.94-.94.94-2.48 0-3.42L12 2Z"/><circle cx="7" cy="7" r="2"/></svg>
+            Categorías
+          </button>
+
+          <button class="nav-item" onclick="switchCollection('proveedores', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg>
+            Proveedores
+          </button>
+
+          <button class="nav-item" onclick="switchCollection('empleados', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
+            Empleados
+          </button>
+
+          <button class="nav-item" onclick="switchCollection('ventas', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            Ventas
+          </button>
+
+          <button class="nav-item" onclick="switchCollection('detalle_ventas', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+            Detalle Ventas
+          </button>
+        </nav>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      
+      <section class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-info">
+            <span class="kpi-title">Módulo Activo</span>
+            <h3 id="kpi-active-module">Productos</h3>
+          </div>
+          <div class="kpi-icon blue">📦</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-info">
+            <span class="kpi-title">Total Registros</span>
+            <h3 id="kpi-count">0</h3>
+          </div>
+          <div class="kpi-icon purple">📊</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-info">
+            <span class="kpi-title">Latencia de Red</span>
+            <h3 class="text-green">12 ms</h3>
+          </div>
+          <div class="kpi-icon green">⚡</div>
+        </div>
+      </section>
+
+      <div class="content-header">
+        <div>
+          <h2 id="view-title">Gestión de Productos</h2>
+          <p class="section-desc">Visualiza, añade y gestiona los datos de la base de datos en tiempo real.</p>
+        </div>
+        <div class="header-buttons">
+          <button class="btn btn-secondary" onclick="refreshData()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            Actualizar
+          </button>
+          <button class="btn btn-primary" onclick="openModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nuevo Registro
+          </button>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="custom-table">
+          <thead>
+            <tr id="table-head-row">
+            </tr>
+          </thead>
+          <tbody id="table-body">
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- MODAL FORMULARIO -->
+  <div class="modal-overlay" id="form-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <span class="modal-tag" id="modal-method-tag">POST</span>
+          <h3 id="modal-title">Agregar Registro</h3>
+        </div>
+        <button class="btn-close" onclick="closeModal()">&times;</button>
+      </div>
+      
+      <form id="crud-form" onsubmit="handleFormSubmit(event)">
+        <div class="modal-body" id="form-fields">
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btn-save">Guardar Cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL AMPLIACIÓN DE IMAGEN -->
+  <div class="modal-overlay" id="image-modal" onclick="closeImageModal()">
+    <div class="image-modal-card" onclick="event.stopPropagation()">
+      <button class="btn-close-img" onclick="closeImageModal()">&times;</button>
+      <img id="modal-img-preview" src="" alt="Imagen Ampliada">
+    </div>
+  </div>
+
+  <!-- COMPONENTE DE NOTIFICACIÓN TOAST -->
+  <div id="toast-notification" class="toast">
+    <span id="toast-icon" class="toast-icon">✔</span>
+    <span id="toast-message">Operación realizada con éxito</span>
+  </div>
+<script src="auth.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
