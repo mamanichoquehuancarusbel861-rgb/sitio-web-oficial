@@ -4,10 +4,10 @@ const API_BASE = 'http://127.0.0.1:5000/api';
 let currentModule = 'productos';
 let editingId = null;
 
-// BANCO DE IMÁGENES / RUTAS (Reemplaza estas URLs con las rutas de tus propias imágenes localmente o URLs)
+// BANCO DE IMÁGENES / RUTAS
 const DEMO_IMAGES = {
   productos: [
-   'img/productos/producto1.jpg',
+    'img/productos/producto1.jpg',
     'img/productos/producto2.jpg',
     'img/productos/producto3.jpg',
     'img/productos/producto4.jpg',
@@ -42,7 +42,6 @@ function obtenerAvatarPorNombre(nombreCompleto = '') {
 
   const primerNombre = nombreCompleto.trim().split(' ')[0].toLowerCase();
   
-  // Lista común de nombres femeninos y regla de terminación en 'a'
   const nombresFemeninos = [
     'maria', 'maría', 'ana', 'lucia', 'lucía', 'carmen', 'laura', 'sofia', 'sofía', 
     'elena', 'patricia', 'martha', 'marta', 'rosa', 'andrea', 'diana', 'paula', 
@@ -62,9 +61,8 @@ const MODULE_CONFIG = {
     title: 'Gestión de Productos',
     endpoint: '/productos',
     idField: 'id_producto',
-    columns: ['Producto', 'Marca', 'P. Compra', 'P. Venta', 'Stock', 'id_categoria', 'id_proveedor', 'Acciones'],
+    columns: ['Producto', 'Marca', 'P. Compra', 'P. Venta', 'Stock', 'ID Categoría', 'ID Proveedor', 'Acciones'],
     renderRow: (item, idx) => {
-      // Usa item.imagen si existe en la API, o tus propias imágenes por defecto
       const imgProducto = item.imagen || DEMO_IMAGES.productos[idx % DEMO_IMAGES.productos.length] || DEMO_IMAGES.productos[0];
 
       return `
@@ -82,6 +80,8 @@ const MODULE_CONFIG = {
         <td>S/ ${parseFloat(item.precio_compra || 0).toFixed(2)}</td>
         <td style="color:var(--accent-green); font-weight:600;">S/ ${parseFloat(item.precio_venta || item.precio || 0).toFixed(2)}</td>
         <td><strong>${item.stock || 0}</strong> und</td>
+        <td>${item.id_categoria || '-'}</td>
+        <td>${item.id_proveedor || '-'}</td>
       `;
     },
     formHTML: (data = {}) => `
@@ -91,6 +91,8 @@ const MODULE_CONFIG = {
       <div class="form-group"><label>Precio Compra (S/):</label><input type="number" step="0.01" id="inp_pcompra" value="${data.precio_compra || ''}"></div>
       <div class="form-group"><label>Precio Venta (S/):</label><input type="number" step="0.01" id="inp_pventa" value="${data.precio_venta || data.precio || ''}"></div>
       <div class="form-group"><label>Stock:</label><input type="number" id="inp_stock" value="${data.stock || 10}"></div>
+      <div class="form-group"><label>ID Categoría:</label><input type="number" id="inp_id_cat" value="${data.id_categoria || 1}"></div>
+      <div class="form-group"><label>ID Proveedor:</label><input type="number" id="inp_id_prov" value="${data.id_proveedor || 1}"></div>
     `,
     getFormData: () => ({
       codigo: document.getElementById('inp_codigo').value,
@@ -98,7 +100,9 @@ const MODULE_CONFIG = {
       marca: document.getElementById('inp_marca').value,
       precio_compra: parseFloat(document.getElementById('inp_pcompra').value) || 0,
       precio_venta: parseFloat(document.getElementById('inp_pventa').value) || 0,
-      stock: parseInt(document.getElementById('inp_stock').value) || 0
+      stock: parseInt(document.getElementById('inp_stock').value) || 0,
+      id_categoria: parseInt(document.getElementById('inp_id_cat').value) || 1,
+      id_proveedor: parseInt(document.getElementById('inp_id_prov').value) || 1
     })
   },
 
@@ -106,10 +110,8 @@ const MODULE_CONFIG = {
     title: 'Gestión de Clientes',
     endpoint: '/clientes',
     idField: 'id_cliente',
-    columns: ['Cliente', 'DNI / RUC', 'Teléfono', 'Dirección', 'Acciones'],
+    columns: ['Cliente', 'Apellidos / R. Social', 'DNI / RUC', 'Teléfono', 'Dirección', 'Acciones'],
     renderRow: (item, idx) => {
-      const nombreCompleto = `${item.nombres || item.nombre || ''} ${item.apellidos || ''}`;
-      // Genera avatar de mujer u hombre según el nombre
       const avatarCliente = obtenerAvatarPorNombre(item.nombres || item.nombre);
 
       return `
@@ -118,26 +120,29 @@ const MODULE_CONFIG = {
             <span class="img-number">${idx + 1}.</span>
             <img src="${avatarCliente}" class="tbl-img" alt="Avatar Cliente" ondblclick="openImageModal(this.src)">
             <div>
-              <strong>${nombreCompleto}</strong>
+              <strong>${item.nombres || item.nombre || 'Sin Nombre'}</strong>
             </div>
           </div>
         </td>
+        <td>${item.apellidos || '-'}</td>
         <td>${item.dni || item.ruc || '-'}</td>
         <td>${item.telefono || '-'}</td>
         <td>${item.direccion || 'Sin dirección'}</td>
       `;
     },
     formHTML: (data = {}) => `
-      <div class="form-group"><label>Nombres:</label><input type="text" id="inp_nom" value="${data.nombres || ''}" required></div>
+      <div class="form-group"><label>Nombres:</label><input type="text" id="inp_nom" value="${data.nombres || data.nombre || ''}" required></div>
       <div class="form-group"><label>Apellidos / Razón Social:</label><input type="text" id="inp_ape" value="${data.apellidos || ''}"></div>
       <div class="form-group"><label>DNI o RUC:</label><input type="text" id="inp_doc" value="${data.dni || ''}"></div>
       <div class="form-group"><label>Teléfono:</label><input type="text" id="inp_tel" value="${data.telefono || ''}"></div>
+      <div class="form-group"><label>Dirección:</label><input type="text" id="inp_dir" value="${data.direccion || ''}"></div>
     `,
     getFormData: () => ({
       nombres: document.getElementById('inp_nom').value,
       apellidos: document.getElementById('inp_ape').value,
       dni: document.getElementById('inp_doc').value,
-      telefono: document.getElementById('inp_tel').value
+      telefono: document.getElementById('inp_tel').value,
+      direccion: document.getElementById('inp_dir').value
     })
   },
 
@@ -190,7 +195,6 @@ const MODULE_CONFIG = {
     idField: 'id_empleado',
     columns: ['Empleado', 'Cargo', 'DNI', 'Acciones'],
     renderRow: (item, idx) => {
-      // Usa item.imagen si existe en la API, o tus propias imágenes de empleados por defecto
       const imgEmpleado = item.imagen || DEMO_IMAGES.empleados[idx % DEMO_IMAGES.empleados.length] || DEMO_IMAGES.empleados[0];
 
       return `
@@ -286,7 +290,7 @@ function switchCollection(moduleName, btnElement) {
   loadModule(moduleName);
 }
 
-// 🟢 FUNCION DE NOTIFICACION DE EXITO / ERROR
+// FUNCION DE NOTIFICACION DE EXITO / ERROR
 function showNotification(message, type = 'success') {
   const toast = document.getElementById('toast-notification');
   const msgEl = document.getElementById('toast-message');
@@ -317,7 +321,7 @@ function showNotification(message, type = 'success') {
   }, 3500);
 }
 
-// 🔄 FUNCION PARA ACTUALIZAR DATOS MANUALMENTE O AUTOMÁTICAMENTE
+// FUNCION PARA ACTUALIZAR DATOS
 async function refreshData() {
   await loadModule(currentModule);
   showNotification('Datos actualizados exitosamente.', 'info');
@@ -416,7 +420,7 @@ function closeModal() {
   document.getElementById('form-modal').classList.remove('active');
 }
 
-// GUARDAR / ACTUALIZAR (POST & PUT CON NOTIFICACIÓN DE ÉXITO)
+// GUARDAR / ACTUALIZAR
 async function handleFormSubmit(event) {
   event.preventDefault();
   const config = MODULE_CONFIG[currentModule];
@@ -436,7 +440,6 @@ async function handleFormSubmit(event) {
       closeModal();
       await loadModule(currentModule);
       
-      // Muestra la notificación correspondiente
       if (editingId) {
         showNotification('Se editó exitosamente.', 'success');
       } else {
@@ -450,7 +453,7 @@ async function handleFormSubmit(event) {
   }
 }
 
-// ELIMINAR (DELETE CON NOTIFICACIÓN DE ÉXITO)
+// ELIMINAR
 async function deleteRecord(id) {
   if (!confirm(`¿Estás seguro de eliminar el registro #${id}?`)) return;
   const config = MODULE_CONFIG[currentModule];
